@@ -47,13 +47,13 @@ resources:
     access_key_id: {{aws-access-key-id}}
     secret_access_key: {{aws-secret-access-key}}
 
-- name: eureka-artifacts
-  type: s3
-  source:
-    bucket: {{aws-bucket}}
-    regexp: pal-tracker/platform-services/eureka-server-(.*).jar
-    access_key_id: {{aws-access-key-id}}
-    secret_access_key: {{aws-secret-access-key}}
+#- name: eureka-artifacts
+#  type: s3
+#  source:
+#    bucket: {{aws-bucket}}
+#    regexp: pal-tracker/platform-services/eureka-server-(.*).jar
+#    access_key_id: {{aws-access-key-id}}
+#    secret_access_key: {{aws-secret-access-key}}
 
 - name: cf
   type: cf
@@ -88,9 +88,9 @@ jobs:
   - put: timesheets-artifacts
     params:
       file: build-output/timesheets*.jar
-  - put: eureka-artifacts
-      params:
-        file: build-output/eureka*.jar
+#  - put: eureka-artifacts
+#    params:
+#       file: build-output/eureka*.jar
   - put: version
     params:
       file: version/number
@@ -147,15 +147,15 @@ jobs:
       path: timesheets-artifacts/timesheets-server*.jar
       current_app_name: tracker-timesheets
 
-- name: deploy-eureka
-  plan:
-  - get: pal-tracker
-    passed: [build]
-    trigger: true
-  - get: eureka-artifacts
-    trigger: false
-  - put: cf
-    params:
-      manifest: pal-tracker/manifest-eureka.yml
-      path: eureka-artifacts/eureka-server*.jar
-      current_app_name: tracker-eureka
+#- name: deploy-eureka
+#  plan:
+#  - get: pal-tracker
+#    passed: [build]
+#    trigger: true
+#  - get: eureka-artifacts
+#    trigger: false
+#  - put: cf
+#    params:
+#      manifest: pal-tracker/manifest-eureka.yml
+#      path: eureka-artifacts/eureka-server*.jar
+#      current_app_name: tracker-eureka
